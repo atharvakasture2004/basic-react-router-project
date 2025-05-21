@@ -1,31 +1,46 @@
-import { Outlet, useNavigate } from "react-router"
-
+import { useState, useEffect } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 
 function Blog() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
+        if (!response.ok) throw new Error('Failed to fetch posts');
+        const data = await response.json();
+        setPosts(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []); 
 
-  const navigate = useNavigate();
+  if (loading) return <p>Loading posts...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <>
-    <h1>Blogs Page</h1>
-    <div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas distinctio, praesentium sequi deleniti laborum reiciendis dicta quibusdam dignissimos rem corrupti reprehenderit unde necessitatibus laudantium aperiam quos veritatis voluptates numquam dolores?</p>
-        <p>Facere quod corporis eveniet repellendus! Molestiae assumenda incidunt accusamus culpa corporis dolores sequi voluptate beatae temporibus iste facere non blanditiis, eaque quaerat dolor. Deserunt ipsum omnis deleniti illo dolorum recusandae.
-        Pariatur odio voluptatum atque natus harum minima nam, quidem culpa nihil libero. Sunt rerum libero reprehenderit! </p>
-        <p>Consequuntur, tempore ad quas consectetur ut impedit aliquid, quibusdam, aut minus repellat laudantium at.</p>
-        
-        
-    </div>
-    <button onClick={()=>navigate('post1')}>
-            goto
-    </button>
-    <button onClick={()=>navigate('post2')}>
-            goto
-    </button>
-    <Outlet/>
-    
+      <h1>Blogs Page</h1>
+      <div className="blog-posts">
+        <h2>Posts</h2>
+        <ul>
+          {posts.map((post) => (
+            <li key={post.id}>
+              <NavLink to={`/blog/post${post.id}`}>{post.title}</NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Outlet />
     </>
-  )
+  );
 }
 
-export default Blog
+export default Blog;

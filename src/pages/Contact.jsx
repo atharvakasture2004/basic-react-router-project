@@ -1,11 +1,39 @@
-import { useState } from "react"
+import { useState,useEffect, useRef, useReducer } from "react"
+import Cookies from 'js-cookie';
+import {getFirestore,collection,addDoc} from 'firebase/firestore'
+import app from './firebase'
+
+
 
 function Contact() {
+  
 
-  const [form , setForm]= useState({
-    userName:"",
-    userMessage:""
-  })
+  
+
+  const [submit,setSubmit]=useState(false);
+
+  const inputRef= useRef(null);
+
+  const writeData = async()=>{
+    const result = await addDoc(collection(firestore,"users"),{
+      userName: form.userName,
+      userMessage: form.userMessage,
+    });
+    console.log(result);
+  }
+
+  useEffect(()=>{
+    inputRef.current.focus();
+  },[]);
+
+  useEffect(()=>{
+    const savedName = localStorage.getItem('userName');
+    if(savedName)
+    {
+      setForm((prev)=>({...prev, userName: savedName}));
+    }
+
+  },[])
 
   
 
@@ -26,7 +54,16 @@ function Contact() {
       alert('Please enter your name');
       return;
     }
+    writeData();
     console.log("Form submited succesfully",form);
+    localStorage.setItem('userName',form.userName);
+    sessionStorage.setItem('userName',form.userName);
+    Cookies.set('formSubmissions',(parseInt(Cookies.get('formSubmissions') || '0')+1).toString(), {expires : 7}
+  );
+  setSubmit(true);
+  setTimeout(()=> setSubmit(false),3000)
+
+
 
     setForm({userName:"",
       userMessage:"",
@@ -44,7 +81,8 @@ function Contact() {
         <input name="userName" type="text" id="userName"
         placeholder="type here"
         onChange={handleChange}
-        value={form.userName}></input>
+        value={form.userName}
+        ref={inputRef}></input>
       </div>
       <div>
         <label htmlFor="userMessage">Message : </label>
@@ -56,6 +94,10 @@ function Contact() {
       </div>
       <div>
         <button type= " submit">Submit</button>
+      </div>
+
+      <div>
+        {submit && <p>Message Sent!</p>}
       </div>
     </form>
     </>

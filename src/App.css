@@ -1,3 +1,4 @@
+@import "tailwindcss";
 header {
   padding: 20px;
   margin-bottom: 20px;
@@ -118,4 +119,83 @@ button:hover {
 .blog-posts a.active {
   background-color: #007bff;
   color: white;
+}
+
+.blog-posts {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.blog-posts ul {
+  list-style: none;
+  padding: 0;
+}
+.blog-posts li {
+  margin-bottom: 10px;
+}
+.blog-posts a,
+.blog-posts a:link,
+.blog-posts a:visited {
+  text-decoration: none;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  color: black;
+}
+.blog-posts a:hover,
+.blog-posts a.active {
+  background-color: #007bff;
+  color: white;
+}
+
+body.light {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --link-bg: #f0f0f0;
+  --link-hover: #007bff;
+  --link-active: #007bff;
+  --link-text: #000000;
+  --link-text-active: #ffffff;
+}
+body.dark {
+  --bg-color: #333333;
+  --text-color: #ffffff;
+  --link-bg: #555555;
+  --link-hover: #66b0ff;
+  --link-active: #66b0ff;
+  --link-text: #ffffff;
+  --link-text-active: #ffffff;
+}
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+nav ul li a,
+nav ul li a:link,
+nav ul li a:visited,
+.blog-posts a,
+.blog-posts a:link,
+.blog-posts a:visited {
+  background-color: var(--link-bg);
+  color: var(--link-text);
+}
+nav ul li a:hover,
+nav ul li a.active,
+.blog-posts a:hover,
+.blog-posts a.active {
+  background-color: var(--link-active);
+  color: var(--link-text-active);
+}
+header, main, footer, .blog-posts {
+  background-color: var(--bg-color);
+}
+button {
+  padding: 5px 10px;
+  background-color: var(--link-bg);
+  color: var(--link-text);
+  border: none;
+  border-radius: 5px;
+}
+button:hover {
+  background-color: var(--link-hover);
+  color: var(--link-text-active);
 }

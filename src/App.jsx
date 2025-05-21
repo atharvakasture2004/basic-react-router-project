@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import Blog from './pages/Blog'
 import Post1 from './pages/Post1';
 import Post2 from './pages/Post2'
+import NotFound from './pages/NotFound';
 
 function App() {
   const router = createBrowserRouter(
@@ -19,6 +20,7 @@ function App() {
         <Route path="post1" element={<Post1/>}/>
         <Route path ="post2" element={<Post2/>}/>
         </Route>
+        <Route path='*' element={<NotFound/>}/>
         
       </Route>
     )
